@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Her Financial Era — Savings Discipline System ✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--rose:#E8748A;--rose-deep:#C94E68;--rose-pale:#FFF0F3;--peach:#F9A875;--lemon:#F9E97E;--lemon-pale:#FEFAE0;--mint:#7DD4B0;--mint-pale:#E8F8F2;--mint-deep:#3daa85;--lav:#C3B1E1;--lav-pale:#F0EAFB;--lav-deep:#7C5CBF;--cream:#FFFBF5;--white:#fff;--ink:#1F1A2E;--charcoal:#3D3557;--muted:#8A7FA0;--border:rgba(195,177,225,0.3);}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:rgba(255,251,245,.95);backdrop-filter:blur(12px);border-bottom:2px solid rgba(242,196,206,.5);padding:12px clamp(14px,4vw,28px);}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;max-width:900px;margin:0 auto;}
+.nav-brand{display:flex;align-items:center;gap:9px;}
+.brand-dot{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--rose-deep),var(--peach));display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.brand-name{font-family:'Fraunces',serif;font-size:clamp(15px,4vw,18px);font-weight:700;color:var(--ink);}
+.brand-name span{color:var(--rose-deep);}
+.nav-right{display:flex;align-items:center;gap:8px;}
+.btn-export{background:var(--lemon);border:none;border-radius:20px;padding:7px 14px;font-size:12px;font-weight:800;color:var(--ink);cursor:pointer;white-space:nowrap;}
+
+/* BOTTOM NAV for mobile */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:99;background:white;border-top:2px solid rgba(242,196,206,.5);display:flex;padding:8px 0 max(8px,env(safe-area-inset-bottom));box-shadow:0 -4px 20px rgba(31,26,46,.08);}
+.bn-tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px;cursor:pointer;border:none;background:none;font-family:'Plus Jakarta Sans',sans-serif;color:var(--muted);font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;transition:color .2s;}
+.bn-tab .bn-icon{font-size:20px;line-height:1;}
+.bn-tab.active{color:var(--rose-deep);}
+
+/* PAGES */
+.page{display:none;padding:clamp(14px,4vw,28px) clamp(14px,4vw,32px) 90px;max-width:900px;margin:0 auto;}
+.page.active{display:block;}
+
+/* CARDS */
+.card{background:var(--white);border-radius:18px;padding:clamp(16px,4vw,26px);box-shadow:0 4px 20px rgba(31,26,46,.07);margin-bottom:14px;}
+.card-title{font-family:'Fraunces',serif;font-size:clamp(16px,4vw,20px);font-weight:700;margin-bottom:4px;}
+.card-sub{font-size:13px;color:var(--muted);margin-bottom:14px;}
+
+/* DASHBOARD */
+.hero-card{background:linear-gradient(135deg,var(--rose-deep),var(--rose) 50%,var(--peach));border-radius:20px;padding:clamp(22px,5vw,34px);position:relative;overflow:hidden;margin-bottom:14px;box-shadow:0 8px 28px rgba(201,78,104,.28);}
+.hero-card::before{content:'💸';position:absolute;font-size:clamp(80px,20vw,140px);opacity:.1;bottom:-10px;right:5px;pointer-events:none;}
+.h-eyebrow{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.75);margin-bottom:8px;}
+.h-amount{font-family:'Fraunces',serif;font-size:clamp(52px,12vw,80px);font-weight:900;color:white;line-height:1;margin-bottom:5px;}
+.h-sub{font-size:clamp(13px,3vw,15px);color:rgba(255,255,255,.85);margin-bottom:20px;}
+.h-bar-track{background:rgba(255,255,255,.2);border-radius:100px;height:12px;overflow:hidden;margin-bottom:8px;}
+.h-bar-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--lemon),white);transition:width .8s cubic-bezier(.4,0,.2,1);position:relative;}
+.h-bar-fill::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);animation:glide 2.5s infinite;}
+@keyframes glide{0%{transform:translateX(-100%)}100%{transform:translateX(200%)}}
+.h-bar-labels{display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,.75);}
+.h-bar-labels strong{color:var(--lemon);font-family:'Fraunces',serif;font-size:18px;}
+
+.stats3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+.ss{background:var(--white);border-radius:16px;padding:clamp(12px,3vw,18px) clamp(10px,3vw,16px);box-shadow:0 4px 16px rgba(31,26,46,.07);border-top:4px solid transparent;}
+.ss.rose{border-top-color:var(--rose);}
+.ss.mint{border-top-color:var(--mint);}
+.ss.lemon{border-top-color:var(--lemon);}
+.ss-emoji{font-size:clamp(18px,4vw,24px);margin-bottom:5px;display:block;}
+.ss-label{font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+.ss-val{font-family:'Fraunces',serif;font-size:clamp(20px,5vw,28px);font-weight:900;color:var(--ink);}
+.ss-note{font-size:10px;color:var(--muted);margin-top:2px;}
+
+.dash3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+.dc{background:var(--white);border-radius:14px;padding:clamp(12px,3vw,18px);box-shadow:0 4px 16px rgba(31,26,46,.07);}
+.dc-label{font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.dc-val{font-family:'Fraunces',serif;font-size:clamp(16px,4vw,22px);font-weight:900;color:var(--ink);}
+.dc-note{font-size:10px;color:var(--muted);margin-top:2px;}
+
+.tw-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.tw-box{padding:clamp(12px,3vw,16px);border-radius:12px;text-align:center;}
+.tw-box.a{background:var(--lav-pale);}
+.tw-box.b{background:var(--mint-pale);}
+.tw-box.c{background:var(--lemon-pale);border:2px solid var(--lemon);}
+.tw-label{font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.tw-val{font-family:'Fraunces',serif;font-size:clamp(18px,4vw,24px);font-weight:900;color:var(--ink);}
+.tw-val.gold{color:var(--rose-deep);}
+
+/* WEEKLY TABLE */
+.week-table-wrap{overflow-x:auto;border-radius:18px;box-shadow:0 4px 20px rgba(31,26,46,.07);}
+.week-table{width:100%;border-collapse:collapse;background:var(--white);border-radius:18px;overflow:hidden;min-width:520px;}
+.week-table th{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:12px 14px;text-align:left;border-bottom:2px solid var(--border);}
+.week-table td{padding:11px 14px;border-bottom:1px solid rgba(195,177,225,.12);vertical-align:middle;}
+.week-table tr:hover td{background:var(--lav-pale);}
+.week-table input[type="number"]{background:var(--lav-pale);border:1.5px solid transparent;border-radius:9px;padding:7px 10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;color:var(--ink);width:100px;outline:none;-moz-appearance:textfield;}
+.week-table input[type="number"]:focus{border-color:var(--rose);}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:800;white-space:nowrap;}
+.badge.on{background:var(--mint-pale);color:var(--mint-deep);}
+.badge.partial{background:var(--lemon-pale);color:#b8920a;}
+.badge.missed{background:var(--rose-pale);color:var(--rose-deep);}
+.badge.future{background:var(--lav-pale);color:var(--muted);}
+.var-pos{color:var(--mint-deep);font-weight:700;}
+.var-neg{color:var(--rose-deep);font-weight:700;}
+
+/* BUDGET */
+.budget-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.add-row{display:flex;gap:8px;margin-bottom:12px;}
+.inp{flex:1;min-width:0;background:var(--lav-pale);border:1.5px solid transparent;border-radius:10px;padding:10px 12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:var(--ink);outline:none;}
+.inp:focus{border-color:var(--rose);}
+.inp.sm{width:75px;flex:none;}
+.btn-add{background:var(--lemon);border:none;border-radius:10px;padding:10px 12px;font-size:13px;font-weight:800;color:var(--ink);cursor:pointer;white-space:nowrap;}
+.log-list{display:flex;flex-direction:column;gap:7px;max-height:220px;overflow-y:auto;}
+.log-item{display:flex;justify-content:space-between;align-items:center;padding:9px 12px;border-radius:10px;}
+.log-item.exp{background:var(--rose-pale);border-left:3px solid var(--rose);}
+.log-item.inc{background:var(--mint-pale);border-left:3px solid var(--mint);}
+.log-name{font-size:13px;font-weight:600;}
+.log-date{font-size:10px;color:var(--muted);}
+.log-amt{font-family:'Fraunces',serif;font-size:16px;font-weight:700;}
+.log-amt.neg{color:var(--rose-deep);}
+.log-amt.pos{color:var(--mint-deep);}
+.del-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:17px;line-height:1;padding:0 2px;}
+.empty{text-align:center;padding:18px;color:var(--muted);font-size:13px;}
+.sum-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.sum-box{padding:clamp(12px,3vw,18px);border-radius:14px;text-align:center;}
+.sum-box.exp{background:var(--rose-pale);}
+.sum-box.inc{background:var(--mint-pale);}
+.sum-box.net{background:var(--lemon-pale);border:2px solid var(--lemon);}
+.sum-label{font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.sum-val{font-family:'Fraunces',serif;font-size:clamp(18px,4vw,24px);font-weight:900;}
+.sum-val.exp{color:var(--rose-deep);}
+.sum-val.inc{color:var(--mint-deep);}
+
+/* PLAN */
+.strat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:0;}
+.strat-item{padding:14px 16px;background:var(--lav-pale);border:2px solid transparent;border-radius:14px;cursor:pointer;display:flex;gap:12px;align-items:flex-start;transition:all .2s;}
+.strat-item:hover,.strat-item.sel{border-color:var(--rose);background:var(--rose-pale);}
+.strat-icon{font-size:20px;flex-shrink:0;}
+.strat-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:3px;}
+.strat-desc{font-size:12px;color:var(--muted);line-height:1.4;}
+.refl-qs{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
+.refl-q{padding:13px 16px;border-radius:12px;}
+.refl-q.rose{border-left:3px solid var(--rose);background:var(--rose-pale);}
+.refl-q.mint{border-left:3px solid var(--mint);background:var(--mint-pale);}
+.refl-q.lav{border-left:3px solid var(--lav-deep);background:var(--lav-pale);}
+.refl-q-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:3px;}
+.refl-q-sub{font-size:12px;color:var(--muted);}
+.field-label{display:block;font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--rose-deep);margin-bottom:9px;}
+textarea.styled{width:100%;background:var(--lav-pale);border:1.5px solid transparent;border-radius:12px;padding:13px;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;color:var(--ink);line-height:1.7;resize:vertical;min-height:90px;outline:none;}
+textarea.styled:focus{border-color:var(--rose);}
+
+/* SETTINGS */
+.set-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--border);gap:12px;}
+.set-row:last-child{border-bottom:none;}
+.set-label{font-size:14px;font-weight:600;}
+.set-desc{font-size:11px;color:var(--muted);margin-top:2px;}
+.set-inp{background:var(--lav-pale);border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:600;color:var(--ink);outline:none;min-width:0;}
+.set-inp:focus{border-color:var(--rose);}
+.btn-rose{background:linear-gradient(135deg,var(--rose-deep),var(--rose));border:none;border-radius:12px;padding:13px 24px;color:white;font-size:14px;font-weight:800;cursor:pointer;}
+.btn-danger{background:var(--rose-pale);border:1.5px solid var(--rose);border-radius:12px;padding:13px 18px;color:var(--rose-deep);font-size:13px;font-weight:800;cursor:pointer;}
+
+/* TOAST */
+#toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--ink);color:white;padding:12px 22px;border-radius:50px;font-size:13px;font-weight:600;z-index:99999;transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .3s;opacity:0;pointer-events:none;white-space:nowrap;box-shadow:0 6px 24px rgba(31,26,46,.25);}
+#toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+
+/* CONFIRM OVERLAY */
+#confirm-overlay{display:none;position:fixed;inset:0;background:rgba(31,26,46,.5);z-index:9998;align-items:center;justify-content:center;padding:16px;}
+#confirm-overlay.show{display:flex;}
+#confirm-box{background:white;border-radius:20px;padding:28px 24px;max-width:300px;width:100%;text-align:center;}
+#confirm-box h3{font-family:'Fraunces',serif;font-size:20px;margin-bottom:8px;}
+#confirm-box p{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.5;}
+#confirm-box .btn-row{display:flex;gap:10px;justify-content:center;}
+#confirm-yes{background:var(--rose-deep);color:white;border:none;border-radius:10px;padding:11px 20px;font-size:13px;font-weight:700;cursor:pointer;}
+#confirm-no{background:var(--lav-pale);color:var(--ink);border:none;border-radius:10px;padding:11px 20px;font-size:13px;font-weight:700;cursor:pointer;}
+
+/* WELCOME MODAL */
+#welcome-overlay{display:none;position:fixed;inset:0;background:rgba(31,26,46,.75);z-index:99999;align-items:center;justify-content:center;backdrop-filter:blur(6px);padding:16px;}
+#welcome-overlay.show{display:flex;}
+.welcome-box{background:white;border-radius:24px;max-width:480px;width:100%;overflow:hidden;box-shadow:0 24px 80px rgba(31,26,46,.3);animation:popIn .4s cubic-bezier(.34,1.56,.64,1);max-height:92vh;overflow-y:auto;}
+@keyframes popIn{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+.w-header{background:linear-gradient(135deg,var(--rose-deep),var(--rose),var(--peach));padding:clamp(22px,5vw,32px) clamp(20px,5vw,32px) clamp(18px,4vw,26px);text-align:center;position:relative;overflow:hidden;}
+.w-header::after{content:'💸';position:absolute;font-size:80px;opacity:.1;bottom:-10px;right:10px;pointer-events:none;}
+.w-emoji{font-size:40px;margin-bottom:8px;display:block;}
+.w-title{font-family:'Fraunces',serif;font-size:clamp(22px,5vw,28px);font-weight:900;color:white;margin-bottom:6px;line-height:1.1;}
+.w-sub{font-size:13px;color:rgba(255,255,255,.88);line-height:1.5;}
+.w-body{padding:clamp(18px,4vw,26px) clamp(18px,4vw,28px) clamp(22px,5vw,30px);}
+.w-steps{display:flex;flex-direction:column;gap:12px;margin-bottom:18px;}
+.w-step{display:flex;align-items:flex-start;gap:12px;padding:13px 14px;border-radius:14px;background:var(--lav-pale);}
+.w-num{width:30px;height:30px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,var(--rose-deep),var(--rose));display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:14px;font-weight:700;color:white;}
+.w-step-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:3px;}
+.w-step-desc{font-size:12px;color:var(--muted);line-height:1.5;}
+.w-note{background:var(--mint-pale);border-left:3px solid var(--mint);border-radius:0 10px 10px 0;padding:11px 14px;font-size:12px;color:var(--charcoal);line-height:1.6;margin-bottom:18px;}
+.w-note strong{color:var(--mint-deep);}
+.btn-w-start{width:100%;background:linear-gradient(135deg,var(--rose-deep),var(--peach));border:none;border-radius:14px;padding:15px;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;color:white;cursor:pointer;box-shadow:0 6px 20px rgba(201,78,104,.3);margin-bottom:10px;}
+.btn-w-skip{background:none;border:none;font-size:12px;color:var(--muted);cursor:pointer;text-decoration:underline;display:block;margin:0 auto;}
+
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-thumb{background:rgba(195,177,225,.5);border-radius:2px;}
+
+@media(max-width:500px){
+  .stats3,.dash3,.tw-grid,.sum-grid{grid-template-columns:1fr 1fr;}
+  .stats3 .ss:last-child,.dash3 .dc:last-child,.tw-grid .tw-box:last-child,.sum-grid .sum-box:last-child{grid-column:1/-1;}
+  .budget-grid,.strat-grid{grid-template-columns:1fr;}
+  .week-table th:nth-child(2),.week-table td:nth-child(2){display:none;}
+}
+@media(min-width:700px){
+  .budget-grid{grid-template-columns:1fr 1fr;}
+  .strat-grid{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <div class="brand-dot">💸</div>
+      <div class="brand-name">Her <span>Financial</span> Era</div>
+    </div>
+    <div class="nav-right">
+      <button class="btn-export" onclick="exportCSV()">📥 Export</button>
+    </div>
+  </div>
+</nav>
+
+<!-- WELCOME MODAL -->
+<div id="welcome-overlay">
+  <div class="welcome-box">
+    <div class="w-header">
+      <span class="w-emoji">✨</span>
+      <div class="w-title">Welcome to Your Financial Era!</div>
+      <div class="w-sub">You just downloaded something that actually works.<br>Here is how to get started in 3 steps.</div>
+    </div>
+    <div class="w-body">
+      <div class="w-steps">
+        <div class="w-step"><div class="w-num">1</div><div><div class="w-step-title">This file lives on your device 💻</div><div class="w-step-desc">Double-click <strong>hfe-premium-system.html</strong> to open it in your browser anytime. No app, no login, ever.</div></div></div>
+        <div class="w-step"><div class="w-num">2</div><div><div class="w-step-title">Set your goal first ⚙️</div><div class="w-step-desc">Tap <strong>Settings</strong> to enter your savings goal, weeks, and start date. This personalizes your entire system.</div></div></div>
+        <div class="w-step"><div class="w-num">3</div><div><div class="w-step-title">Log your savings every week 📅</div><div class="w-step-desc">Head to <strong>Weekly Log</strong> each week and enter what you actually saved. Your Dashboard updates live.</div></div></div>
+      </div>
+      <div class="w-note"><strong>💾 Your data saves automatically</strong> in this browser on this device. Pick one browser and stick with it — opening the file in a different browser starts fresh.</div>
+      <button class="btn-w-start" onclick="closeWelcome()">I am Ready — Let us Build My Era 🚀</button>
+      <button class="btn-w-skip" onclick="closeWelcome()">Skip intro</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST + CONFIRM -->
+<div id="toast"></div>
+<div id="confirm-overlay">
+  <div id="confirm-box">
+    <h3>Are you sure? 🤔</h3>
+    <p>This will erase all your savings data and cannot be undone.</p>
+    <div class="btn-row"><button id="confirm-yes">Yes, reset</button><button id="confirm-no">Cancel</button></div>
+  </div>
+</div>
+
+<!-- PAGES -->
+<div class="page active" id="page-dashboard">
+  <div class="hero-card">
+    <div class="h-eyebrow">Her Financial Era — Savings System</div>
+    <div class="h-amount" id="hAmount">$0</div>
+    <div class="h-sub">saved toward your <strong id="hGoalLabel" style="color:var(--lemon)">$5,000</strong> goal 🎯</div>
+    <div class="h-bar-track"><div class="h-bar-fill" id="hBar" style="width:0%"></div></div>
+    <div class="h-bar-labels"><span>$0</span><span><strong id="hPct">0%</strong> complete ✨</span><span id="hGoalEnd">$5,000</span></div>
+  </div>
+  <div class="stats3">
+    <div class="ss rose"><span class="ss-emoji">📅</span><div class="ss-label">Weekly</div><div class="ss-val" id="ssWT">$192</div><div class="ss-note">target</div></div>
+    <div class="ss mint"><span class="ss-emoji">🏆</span><div class="ss-label">On-Pace</div><div class="ss-val" id="ssOP">0</div><div class="ss-note">weeks</div></div>
+    <div class="ss lemon"><span class="ss-emoji">⏳</span><div class="ss-label">Weeks Left</div><div class="ss-val" id="ssWL">26</div><div class="ss-note" id="ssRem">$5k to go</div></div>
+  </div>
+  <div class="dash3">
+    <div class="dc"><div class="dc-label">✂️ Cut</div><div class="dc-val" id="dcExp" style="color:var(--rose-deep)">$0</div><div class="dc-note">expenses</div></div>
+    <div class="dc"><div class="dc-label">💼 Income</div><div class="dc-val" id="dcInc" style="color:var(--mint-deep)">$0</div><div class="dc-note">added</div></div>
+    <div class="dc"><div class="dc-label">🗓️ Finish</div><div class="dc-val" id="dcProj" style="color:var(--lav-deep);font-size:clamp(13px,3vw,18px)">—</div><div class="dc-note">projected</div></div>
+  </div>
+  <div class="card">
+    <div class="card-title" style="margin-bottom:14px">This Week 🔥</div>
+    <div class="tw-grid" id="twGrid"></div>
+  </div>
+</div>
+
+<div class="page" id="page-weekly">
+  <div class="card-title" style="font-family:'Fraunces',serif;font-size:clamp(18px,5vw,26px);font-weight:700;margin-bottom:14px;">📅 Weekly Savings Log</div>
+  <div class="week-table-wrap">
+    <table class="week-table">
+      <thead><tr><th>Week</th><th>Period</th><th>Target</th><th>Saved</th><th>Variance</th><th>Status</th></tr></thead>
+      <tbody id="wkBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="page" id="page-budget">
+  <div class="budget-grid">
+    <div class="card" style="margin-bottom:0">
+      <div class="card-title">✂️ Expenses Cut</div>
+      <div class="card-sub">Spending eliminated to build capacity.</div>
+      <div class="add-row"><input class="inp" type="text" id="bExpN" placeholder="What did you cut?"><input class="inp sm" type="number" id="bExpA" placeholder="$" inputmode="decimal"><button class="btn-add" onclick="addBudget('exp')">+</button></div>
+      <div class="log-list" id="bExpList"></div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-title">💼 Extra Income</div>
+      <div class="card-sub">Additional income toward goal.</div>
+      <div class="add-row"><input class="inp" type="text" id="bIncN" placeholder="Source?"><input class="inp sm" type="number" id="bIncA" placeholder="$" inputmode="decimal"><button class="btn-add" onclick="addBudget('inc')">+</button></div>
+      <div class="log-list" id="bIncList"></div>
+    </div>
+  </div>
+  <div style="margin-bottom:14px"></div>
+  <div class="card">
+    <div class="card-title" style="margin-bottom:14px">💡 Budget Summary</div>
+    <div class="sum-grid">
+      <div class="sum-box exp"><div class="sum-label">Total Cut</div><div class="sum-val exp" id="bSumExp">$0</div></div>
+      <div class="sum-box inc"><div class="sum-label">Income Added</div><div class="sum-val inc" id="bSumInc">$0</div></div>
+      <div class="sum-box net"><div class="sum-label">Net Redirected</div><div class="sum-val" id="bSumNet">$0</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-plan">
+  <div class="card">
+    <div class="card-title">🎯 My Savings Disciplines</div>
+    <div class="card-sub">Select the commitments you are actually making — not just aspiring to.</div>
+    <div class="strat-grid" id="stratGrid"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">✍️ My Written Commitment</div>
+    <div class="card-sub">Write it down. Mean it. Return to it when it gets hard.</div>
+    <label class="field-label">Commitment Statement</label>
+    <textarea class="styled" id="commitTA" placeholder="I am committed to saving $_____ by _____ because..." oninput="ss()"></textarea>
+  </div>
+  <div class="card">
+    <div class="card-title">🪞 Weekly Reflection</div>
+    <div class="card-sub">Answer these honestly at the end of every week.</div>
+    <div class="refl-qs">
+      <div class="refl-q rose"><div class="refl-q-title">Did I hit my weekly target?</div><div class="refl-q-sub">If not — what specific decision caused the miss?</div></div>
+      <div class="refl-q mint"><div class="refl-q-title">What spending temptation was hardest?</div><div class="refl-q-sub">Name it. Vague answers produce vague results.</div></div>
+      <div class="refl-q lav"><div class="refl-q-title">One thing I will do differently next week?</div><div class="refl-q-sub">One decision beats five intentions every time.</div></div>
+    </div>
+    <label class="field-label">This Week's Reflection</label>
+    <textarea class="styled" id="reflTA" placeholder="This week I..." oninput="ss()"></textarea>
+  </div>
+</div>
+
+<div class="page" id="page-settings">
+  <div class="card">
+    <div class="card-title" style="margin-bottom:18px;padding-bottom:14px;border-bottom:2px solid var(--border)">⚙️ Goal Settings</div>
+    <div class="set-row"><div><div class="set-label">Savings Goal</div><div class="set-desc">Total you are building toward</div></div><input class="set-inp" type="number" id="sGoal" style="width:120px" inputmode="numeric"></div>
+    <div class="set-row"><div><div class="set-label">Number of Weeks</div><div class="set-desc">26 weeks = 6 months</div></div><input class="set-inp" type="number" id="sWeeks" style="width:90px" inputmode="numeric"></div>
+    <div class="set-row"><div><div class="set-label">Start Date</div></div><input class="set-inp" type="date" id="sStart" style="width:160px"></div>
+    <div class="set-row"><div><div class="set-label">Your Name</div><div class="set-desc">Appears on your export</div></div><input class="set-inp" type="text" id="sName" placeholder="Your name" style="width:160px"></div>
+    <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn-rose" onclick="applySet()">Save Settings ✨</button>
+      <button class="btn-danger" onclick="resetAll()">Reset All Data</button>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="bn-tab active" onclick="go('dashboard',this)" id="tab-dashboard"><span class="bn-icon">✨</span>Home</button>
+  <button class="bn-tab" onclick="go('weekly',this)" id="tab-weekly"><span class="bn-icon">📅</span>Weekly</button>
+  <button class="bn-tab" onclick="go('budget',this)" id="tab-budget"><span class="bn-icon">💳</span>Budget</button>
+  <button class="bn-tab" onclick="go('plan',this)" id="tab-plan"><span class="bn-icon">🎯</span>My Plan</button>
+  <button class="bn-tab" onclick="go('settings',this)" id="tab-settings"><span class="bn-icon">⚙️</span>Settings</button>
+</nav>
+
+<script>
+const STRATS=[
+  {id:'weekly',icon:'🎯',name:'Set a Weekly Target',desc:'Non-negotiable weekly amount saved first.'},
+  {id:'subs',icon:'✂️',name:'Cut Subscriptions',desc:'Cancel every non-essential monthly service.'},
+  {id:'cash',icon:'💵',name:'Cash-Only Spending',desc:'Physical cash enforces real limits.'},
+  {id:'side',icon:'🔨',name:'Generate Side Income',desc:'One skill producing income for the goal.'},
+  {id:'sell',icon:'📦',name:'Sell What You No Longer Use',desc:'Convert idle possessions into capital.'},
+  {id:'meal',icon:'🥗',name:'Meal Plan Weekly',desc:'Fixed food budget, planned meals.'},
+  {id:'acct',icon:'🤝',name:'Accountability Partner',desc:'Share weekly results with someone who checks.'},
+  {id:'auto',icon:'⚙️',name:'Automate Transfers',desc:'Scheduled weekly transfer, no willpower needed.'},
+];
+
+const store={get:function(k){try{const d=localStorage.getItem(k);return d?JSON.parse(d):null;}catch(e){return null;}},set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}},remove:function(k){try{localStorage.removeItem(k);}catch(e){}}};
+let S={goal:5000,weeks:26,startDate:'',name:'',weekSavings:{},expenses:[],income:[],commitment:'',reflection:'',strategies:[]};
+
+function ld(){const d=store.get('hfe_pro_v3');if(d)S={...S,...d};}
+function ss(){
+  S.commitment=(document.getElementById('commitTA')||{}).value||S.commitment;
+  S.reflection=(document.getElementById('reflTA')||{}).value||S.reflection;
+  store.set('hfe_pro_v3',S);updateAll();
+}
+
+function go(name,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.bn-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  if(btn)btn.classList.add('active');
+  updateAll();
+}
+
+function tot(){return Object.values(S.weekSavings).reduce((a,b)=>a+(parseFloat(b)||0),0);}
+function wt(){return S.goal/S.weeks;}
+function fmt(n){return n.toLocaleString('en-US',{maximumFractionDigits:0});}
+
+function updateAll(){updateDash();updateWeekly();updateBudget();renderBLogs();renderStrats();}
+
+function updateDash(){
+  const saved=tot();const pct=Math.min(100,(saved/S.goal)*100);
+  const onPace=Object.values(S.weekSavings).filter(v=>parseFloat(v)>=wt()).length;
+  const logged=Object.keys(S.weekSavings).length;const left=Math.max(0,S.weeks-logged);const rem=Math.max(0,S.goal-saved);
+  document.getElementById('hAmount').textContent='$'+fmt(saved);
+  document.getElementById('hGoalLabel').textContent='$'+fmt(S.goal);
+  document.getElementById('hGoalEnd').textContent='$'+fmt(S.goal);
+  document.getElementById('hBar').style.width=pct+'%';
+  document.getElementById('hPct').textContent=pct.toFixed(1)+'%';
+  document.getElementById('ssWT').textContent='$'+wt().toFixed(0);
+  document.getElementById('ssOP').textContent=onPace;
+  document.getElementById('ssWL').textContent=left;
+  document.getElementById('ssRem').textContent='$'+fmt(rem)+' to go';
+  document.getElementById('dcExp').textContent='$'+S.expenses.reduce((a,b)=>a+b.amt,0).toFixed(0);
+  document.getElementById('dcInc').textContent='$'+S.income.reduce((a,b)=>a+b.amt,0).toFixed(0);
+  let proj='—';
+  if(logged>0&&saved>0){const avg=saved/logged;const need=Math.ceil(S.goal/avg);if(S.startDate){const e=new Date(S.startDate);e.setDate(e.getDate()+need*7);proj=e.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'2-digit'});}else{proj='~Wk '+need;}}
+  document.getElementById('dcProj').textContent=proj;
+  const curW=Math.min(logged+1,S.weeks);const adjT=left>0?(rem/left).toFixed(2):'0';
+  const tw=document.getElementById('twGrid');if(tw)tw.innerHTML=`<div class="tw-box a"><div class="tw-label">Current Week</div><div class="tw-val">Week ${curW}</div></div><div class="tw-box b"><div class="tw-label">Standard Target</div><div class="tw-val">$${wt().toFixed(0)}</div></div><div class="tw-box c"><div class="tw-label">Adjusted Target</div><div class="tw-val gold">$${adjT}</div></div>`;
+}
+
+function updateWeekly(){
+  const tbody=document.getElementById('wkBody');if(!tbody)return;let rows='';
+  for(let w=1;w<=S.weeks;w++){
+    const v=S.weekSavings[w];const sv=parseFloat(v)||0;const has=v!==undefined&&v!==''&&v!==null;
+    const vari=has?(sv-wt()):null;
+    let period='';if(S.startDate){const s=new Date(S.startDate);s.setDate(s.getDate()+(w-1)*7);const e=new Date(s);e.setDate(e.getDate()+6);period=s.toLocaleDateString('en-US',{month:'short',day:'numeric'})+' – '+e.toLocaleDateString('en-US',{month:'short',day:'numeric'});}else{period='Week '+w;}
+    let badge='';
+    if(!has)badge='<span class="badge future">⬜ Pending</span>';
+    else if(sv>=wt())badge='<span class="badge on">✅ On Track</span>';
+    else if(sv>0)badge='<span class="badge partial">🌙 Partial</span>';
+    else badge='<span class="badge missed">❌ Missed</span>';
+    const varD=vari!==null?`<span class="${vari>=0?'var-pos':'var-neg'}">${vari>=0?'+':''}$${vari.toFixed(2)}</span>`:'<span style="color:var(--muted)">—</span>';
+    rows+=`<tr><td style="font-weight:700;white-space:nowrap">Wk ${w}</td><td style="color:var(--muted);font-size:12px;white-space:nowrap">${period}</td><td style="color:var(--muted);white-space:nowrap">$${wt().toFixed(0)}</td><td><input type="number" inputmode="decimal" value="${has?sv:''}" placeholder="0.00" onchange="logW(${w},this.value)"></td><td>${varD}</td><td>${badge}</td></tr>`;
+  }tbody.innerHTML=rows;
+}
+
+function logW(w,v){S.weekSavings[w]=parseFloat(v)||0;ss();updateWeekly();}
+
+function updateBudget(){
+  const te=S.expenses.reduce((a,b)=>a+b.amt,0);const ti=S.income.reduce((a,b)=>a+b.amt,0);
+  if(document.getElementById('bSumExp')){document.getElementById('bSumExp').textContent='$'+te.toFixed(2);document.getElementById('bSumInc').textContent='$'+ti.toFixed(2);document.getElementById('bSumNet').textContent='$'+(te+ti).toFixed(2);}
+}
+
+function addBudget(t){
+  const n=document.getElementById(t==='exp'?'bExpN':'bIncN').value.trim();const a=parseFloat(document.getElementById(t==='exp'?'bExpA':'bIncA').value);if(!n||!a)return;
+  const entry={id:Date.now(),name:n,amt:a,date:new Date().toLocaleDateString()};
+  if(t==='exp')S.expenses.push(entry);else S.income.push(entry);
+  document.getElementById(t==='exp'?'bExpN':'bIncN').value='';document.getElementById(t==='exp'?'bExpA':'bIncA').value='';
+  ss();renderBLogs();
+}
+function removeBudget(t,id){if(t==='exp')S.expenses=S.expenses.filter(e=>e.id!==id);else S.income=S.income.filter(e=>e.id!==id);ss();renderBLogs();}
+function renderBLogs(){
+  const eL=document.getElementById('bExpList');const iL=document.getElementById('bIncList');if(!eL)return;
+  eL.innerHTML=S.expenses.length===0?'<div class="empty">Nothing cut yet ✂️</div>':S.expenses.map(e=>`<div class="log-item exp"><div><div class="log-name">${e.name}</div><div class="log-date">${e.date}</div></div><div style="display:flex;align-items:center;gap:8px"><div class="log-amt neg">-$${e.amt.toFixed(2)}</div><button class="del-btn" onclick="removeBudget('exp',${e.id})">×</button></div></div>`).join('');
+  iL.innerHTML=S.income.length===0?'<div class="empty">No extra income yet 💼</div>':S.income.map(e=>`<div class="log-item inc"><div><div class="log-name">${e.name}</div><div class="log-date">${e.date}</div></div><div style="display:flex;align-items:center;gap:8px"><div class="log-amt pos">+$${e.amt.toFixed(2)}</div><button class="del-btn" onclick="removeBudget('inc',${e.id})">×</button></div></div>`).join('');
+}
+
+function renderStrats(){const g=document.getElementById('stratGrid');if(!g)return;g.innerHTML=STRATS.map(s=>`<div class="strat-item ${S.strategies.includes(s.id)?'sel':''}" onclick="toggleS('${s.id}')"><div class="strat-icon">${s.icon}</div><div><div class="strat-name">${s.name}</div><div class="strat-desc">${s.desc}</div></div></div>`).join('');}
+function toggleS(id){if(S.strategies.includes(id))S.strategies=S.strategies.filter(s=>s!==id);else S.strategies.push(id);ss();renderStrats();}
+
+function showToast(msg,dur=2800){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur);}
+
+function applySet(){S.goal=parseFloat(document.getElementById('sGoal').value)||5000;S.weeks=parseInt(document.getElementById('sWeeks').value)||26;S.startDate=document.getElementById('sStart').value;S.name=document.getElementById('sName').value;ss();showToast('Settings saved! ✨');}
+
+function resetAll(){
+  document.getElementById('confirm-overlay').classList.add('show');
+  document.getElementById('confirm-yes').onclick=function(){
+    document.getElementById('confirm-overlay').classList.remove('show');
+    store.remove('hfe_pro_v3');
+    S={goal:5000,weeks:26,startDate:'',name:'',weekSavings:{},expenses:[],income:[],commitment:'',reflection:'',strategies:[]};
+    document.getElementById('sGoal').value=5000;document.getElementById('sWeeks').value=26;
+    document.getElementById('sStart').value=new Date().toISOString().split('T')[0];
+    document.getElementById('sName').value='';
+    document.getElementById('commitTA').value='';document.getElementById('reflTA').value='';
+    updateAll();showToast('Fresh start! 🌱');
+  };
+  document.getElementById('confirm-no').onclick=function(){document.getElementById('confirm-overlay').classList.remove('show');};
+}
+
+function exportCSV(){
+  const saved=tot();const pct=((saved/S.goal)*100).toFixed(1);
+  let csv=`Her Financial Era — Savings Discipline System\nName: ${S.name||'Not set'}\nGoal: $${S.goal} | Weeks: ${S.weeks} | Saved: $${saved.toFixed(2)} | Progress: ${pct}%\n\nWeek,Saved,Target,Variance\n`;
+  for(let w=1;w<=S.weeks;w++){const s=parseFloat(S.weekSavings[w])||0;csv+=`${w},${s.toFixed(2)},${wt().toFixed(2)},${(s-wt()).toFixed(2)}\n`;}
+  csv+='\nExpenses Cut\n';S.expenses.forEach(e=>{csv+=`${e.date},${e.name},-${e.amt.toFixed(2)}\n`;});
+  csv+='\nExtra Income\n';S.income.forEach(e=>{csv+=`${e.date},${e.name},+${e.amt.toFixed(2)}\n`;});
+  csv+=`\nCommitment:\n"${S.commitment}"\n\nReflection:\n"${S.reflection}"\n`;
+  const b=new Blob([csv],{type:'text/csv'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='her-financial-era-savings.csv';a.click();URL.revokeObjectURL(u);
+}
+
+function closeWelcome(){document.getElementById('welcome-overlay').classList.remove('show');store.set('hfe_welcomed_v3',true);}
+function checkWelcome(){const seen=store.get('hfe_welcomed_v3');if(!seen)document.getElementById('welcome-overlay').classList.add('show');}
+
+ld();
+document.getElementById('sGoal').value=S.goal;document.getElementById('sWeeks').value=S.weeks;
+document.getElementById('sStart').value=S.startDate||new Date().toISOString().split('T')[0];
+document.getElementById('sName').value=S.name;
+document.getElementById('commitTA').value=S.commitment;document.getElementById('reflTA').value=S.reflection;
+updateAll();checkWelcome();
+</script>
+</body>
+</html>
