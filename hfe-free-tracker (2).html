@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Her Financial Era — Free $5K Savings Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--rose:#E8748A;--rose-deep:#C94E68;--rose-pale:#FFF0F3;--peach:#F9A875;--lemon:#F9E97E;--mint:#7DD4B0;--mint-pale:#E8F8F2;--mint-deep:#3daa85;--lav:#C3B1E1;--lav-pale:#F0EAFB;--charcoal:#3D3557;--cream:#FFFBF5;--white:#fff;--ink:#1F1A2E;--muted:#8A7FA0;--border:rgba(195,177,225,0.3);}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;overflow-x:hidden;}
+
+.header{background:linear-gradient(135deg,var(--rose-deep) 0%,var(--rose) 50%,var(--peach) 100%);padding:clamp(24px,6vw,48px) clamp(18px,5vw,40px) clamp(28px,6vw,48px);position:relative;overflow:hidden;}
+.header::after{content:'💰';position:absolute;font-size:clamp(70px,18vw,130px);opacity:.1;bottom:-10px;right:10px;pointer-events:none;}
+.hfe-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.35);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700;color:white;letter-spacing:1px;margin-bottom:12px;}
+.header h1{font-family:'Fraunces',serif;font-size:clamp(38px,9vw,68px);font-weight:900;color:white;line-height:1.0;margin-bottom:8px;}
+.header h1 em{font-style:italic;}
+.header-sub{font-size:clamp(13px,3.5vw,16px);color:rgba(255,255,255,.88);max-width:460px;line-height:1.6;margin-bottom:16px;}
+.free-pill{display:inline-block;background:var(--lemon);color:var(--ink);font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:7px 18px;border-radius:20px;}
+
+.main{padding:clamp(14px,4vw,32px) clamp(14px,4vw,40px) 80px;max-width:900px;margin:0 auto;}
+
+.card{background:var(--white);border-radius:18px;padding:clamp(16px,4vw,26px);box-shadow:0 4px 20px rgba(31,26,46,.07);margin-bottom:14px;}
+.card-title{font-family:'Fraunces',serif;font-size:clamp(16px,4vw,20px);font-weight:700;margin-bottom:4px;}
+.card-sub{font-size:13px;color:var(--muted);margin-bottom:14px;}
+
+.setup-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+.field label{display:block;font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--rose-deep);margin-bottom:7px;}
+.field input{width:100%;background:var(--lav-pale);border:2px solid transparent;border-radius:10px;padding:11px 13px;color:var(--ink);font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:600;outline:none;transition:border-color .2s;}
+.field input:focus{border-color:var(--rose);}
+.btn-set{width:100%;background:linear-gradient(135deg,var(--rose-deep),var(--rose));color:white;border:none;border-radius:12px;padding:14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 4px 16px rgba(201,78,104,.3);}
+
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px;}
+.stat-pill{background:var(--white);border-radius:16px;padding:clamp(12px,3vw,20px) clamp(10px,3vw,18px);box-shadow:0 4px 16px rgba(31,26,46,.07);position:relative;overflow:hidden;}
+.stat-pill::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;border-radius:16px 16px 0 0;}
+.stat-pill.rose::before{background:linear-gradient(90deg,var(--rose-deep),var(--rose));}
+.stat-pill.peach::before{background:linear-gradient(90deg,var(--peach),var(--lemon));}
+.stat-pill.mint::before{background:linear-gradient(90deg,var(--mint),var(--lav));}
+.stat-emoji{font-size:clamp(18px,4vw,26px);margin-bottom:5px;display:block;}
+.stat-label{font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.stat-val{font-family:'Fraunces',serif;font-size:clamp(20px,5vw,32px);font-weight:900;line-height:1;}
+.stat-val.rose{color:var(--rose-deep);}
+.stat-val.mint{color:var(--mint-deep);}
+.stat-note{font-size:11px;color:var(--muted);margin-top:3px;}
+
+.prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.prog-title{font-family:'Fraunces',serif;font-size:clamp(16px,4vw,20px);font-weight:700;}
+.prog-pct{font-family:'Fraunces',serif;font-size:clamp(22px,5vw,30px);font-weight:900;color:var(--rose-deep);}
+.bar-track{background:var(--lav-pale);border-radius:100px;height:16px;overflow:hidden;margin-bottom:8px;}
+.bar-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--mint),var(--rose),var(--peach));transition:width .7s cubic-bezier(.4,0,.2,1);position:relative;}
+.bar-fill::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);animation:shine 2s infinite;}
+@keyframes shine{0%{transform:translateX(-100%)}100%{transform:translateX(200%)}}
+.prog-note{font-size:13px;color:var(--muted);line-height:1.5;}
+
+.section-head{margin-bottom:12px;}
+.section-title{font-family:'Fraunces',serif;font-size:clamp(17px,4vw,22px);font-weight:700;margin-bottom:2px;}
+.section-sub{font-size:13px;color:var(--muted);}
+
+.week-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(clamp(95px,22vw,130px),1fr));gap:10px;margin-bottom:14px;}
+.w-cell{background:var(--white);border:2px solid var(--border);border-radius:14px;padding:clamp(10px,2.5vw,14px) clamp(8px,2vw,12px);text-align:center;}
+.w-cell.done{border-color:var(--mint);background:var(--mint-pale);}
+.w-cell.partial{border-color:var(--lemon);background:#FEF9D7;}
+.w-num{font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.w-cell.done .w-num{color:var(--mint-deep);}
+.w-target{font-family:'Fraunces',serif;font-size:clamp(14px,3vw,17px);font-weight:700;color:var(--charcoal);margin-bottom:7px;}
+.w-inp{width:100%;background:var(--lav-pale);border:1.5px solid transparent;border-radius:8px;padding:6px 4px;text-align:center;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;color:var(--ink);outline:none;}
+.w-inp:focus{border-color:var(--rose);}
+.w-icon{font-size:15px;margin-top:5px;display:block;}
+
+.logs-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.log-add{display:flex;gap:8px;margin-bottom:12px;}
+.log-add input{flex:1;min-width:0;background:var(--lav-pale);border:1.5px solid transparent;border-radius:10px;padding:10px 10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:var(--ink);outline:none;}
+.log-add input:focus{border-color:var(--rose);}
+.log-add input.amt{width:68px;flex:none;}
+.btn-add-sm{background:var(--lemon);border:none;border-radius:10px;padding:10px 12px;font-size:13px;font-weight:800;color:var(--ink);cursor:pointer;white-space:nowrap;}
+.log-list{display:flex;flex-direction:column;gap:7px;max-height:200px;overflow-y:auto;}
+.log-item{display:flex;justify-content:space-between;align-items:center;padding:9px 11px;border-radius:10px;}
+.log-item.exp{background:var(--rose-pale);border-left:3px solid var(--rose);}
+.log-item.inc{background:var(--mint-pale);border-left:3px solid var(--mint);}
+.log-name{font-size:12px;font-weight:600;}
+.log-date{font-size:10px;color:var(--muted);}
+.log-amt{font-family:'Fraunces',serif;font-size:15px;font-weight:700;}
+.log-amt.neg{color:var(--rose-deep);}
+.log-amt.pos{color:var(--mint-deep);}
+.del-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:17px;padding:0 2px;line-height:1;}
+.empty{text-align:center;padding:16px;color:var(--muted);font-size:12px;}
+
+.upgrade-banner{background:linear-gradient(135deg,var(--charcoal),#2D2550);border-radius:18px;padding:clamp(22px,5vw,30px);position:relative;overflow:hidden;}
+.upgrade-banner::before{content:'⭐';font-size:90px;opacity:.06;position:absolute;right:10px;top:-20px;pointer-events:none;}
+.upgrade-label{display:inline-block;background:var(--lemon);color:var(--ink);font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:10px;}
+.upgrade-title{font-family:'Fraunces',serif;font-size:clamp(18px,5vw,24px);font-weight:900;color:white;margin-bottom:8px;}
+.upgrade-perks{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:18px;}
+.perk{font-size:12px;color:rgba(255,255,255,.8);display:flex;align-items:flex-start;gap:5px;}
+.perk::before{content:'✓';color:var(--mint);font-weight:800;flex-shrink:0;}
+.btn-upgrade{width:100%;background:linear-gradient(135deg,var(--peach),var(--lemon));border:none;border-radius:14px;padding:16px;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;color:var(--ink);cursor:pointer;box-shadow:0 6px 20px rgba(249,168,117,.4);margin-bottom:8px;}
+.upgrade-note{font-size:12px;color:rgba(255,255,255,.4);text-align:center;}
+
+#upgrade-modal{display:none;position:fixed;inset:0;background:rgba(31,26,46,.65);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(4px);padding:16px;}
+#upgrade-modal.show{display:flex;}
+.um-box{background:white;border-radius:24px;max-width:400px;width:100%;overflow:hidden;box-shadow:0 20px 60px rgba(31,26,46,.25);animation:popIn .4s cubic-bezier(.34,1.56,.64,1);max-height:90vh;overflow-y:auto;}
+@keyframes popIn{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+.um-header{background:linear-gradient(135deg,var(--rose-deep),var(--rose),var(--peach));padding:26px 26px 18px;text-align:center;}
+.um-emoji{font-size:38px;margin-bottom:8px;display:block;}
+.um-title{font-family:'Fraunces',serif;font-size:clamp(20px,5vw,24px);font-weight:900;color:white;margin-bottom:5px;}
+.um-sub{font-size:13px;color:rgba(255,255,255,.85);line-height:1.5;}
+.um-body{padding:22px 24px 26px;}
+.um-perks{background:var(--lav-pale);border-radius:14px;padding:14px;margin-bottom:16px;display:flex;flex-direction:column;gap:9px;}
+.um-perk{font-size:13px;color:var(--charcoal);font-weight:500;display:flex;gap:8px;align-items:flex-start;}
+.um-perk::before{content:'✅';flex-shrink:0;}
+.um-price{font-family:'Fraunces',serif;font-size:clamp(28px,7vw,36px);font-weight:900;color:var(--rose-deep);text-align:center;margin-bottom:3px;}
+.um-price-note{font-size:12px;color:var(--muted);text-align:center;margin-bottom:16px;}
+.um-cta{width:100%;background:linear-gradient(135deg,var(--rose-deep),var(--peach));border:none;border-radius:14px;padding:16px;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;color:white;cursor:pointer;margin-bottom:10px;}
+.um-close{background:none;border:none;font-size:13px;color:var(--muted);cursor:pointer;text-decoration:underline;display:block;margin:0 auto;}
+
+textarea.styled{width:100%;background:var(--lav-pale);border:1.5px solid transparent;border-radius:12px;padding:13px;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;color:var(--ink);line-height:1.7;resize:vertical;min-height:88px;outline:none;}
+textarea.styled:focus{border-color:var(--rose);}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-thumb{background:rgba(195,177,225,.5);border-radius:2px;}
+
+@media(max-width:480px){
+  .setup-grid{grid-template-columns:1fr;}
+  .stats-row{grid-template-columns:1fr 1fr;}
+  .stats-row .stat-pill:last-child{grid-column:1/-1;}
+  .logs-grid{grid-template-columns:1fr;}
+  .upgrade-perks{grid-template-columns:1fr;}
+  .week-grid{grid-template-columns:repeat(3,1fr);}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="hfe-badge">✨ Her Financial Era</div>
+  <h1>Save <em>$5,000</em><br>in 6 Months 💸</h1>
+  <div class="header-sub">Your free tracker to build real savings — one week at a time.</div>
+  <span class="free-pill">🎉 100% Free</span>
+</div>
+
+<div class="main">
+
+  <div class="card">
+    <div class="card-title">Set Your Goal 🎯</div>
+    <div class="card-sub">Customize your target and timeline.</div>
+    <div class="setup-grid">
+      <div class="field"><label>Goal ($)</label><input type="number" id="goalAmt" value="5000" inputmode="numeric"></div>
+      <div class="field"><label>Weeks</label><input type="number" id="goalWeeks" value="26" inputmode="numeric"></div>
+      <div class="field" style="grid-column:1/-1"><label>Start Date</label><input type="date" id="startDate"></div>
+    </div>
+    <button class="btn-set" onclick="initGoal()">Set My Goal 🚀</button>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-pill rose"><span class="stat-emoji">💰</span><div class="stat-label">Saved</div><div class="stat-val rose" id="sTotalSaved">$0</div><div class="stat-note" id="sGoalOf">of $5,000</div></div>
+    <div class="stat-pill peach"><span class="stat-emoji">📅</span><div class="stat-label">Weekly</div><div class="stat-val" id="sWeeklyTarget">$192</div><div class="stat-note">per week</div></div>
+    <div class="stat-pill mint"><span class="stat-emoji">⏳</span><div class="stat-label">Weeks Left</div><div class="stat-val mint" id="sWeeksLeft">26</div><div class="stat-note" id="sRemaining">to go</div></div>
+  </div>
+
+  <div class="card">
+    <div class="prog-top"><div class="prog-title">Progress 🌟</div><div class="prog-pct" id="sPct">0%</div></div>
+    <div class="bar-track"><div class="bar-fill" id="sBar" style="width:0%"></div></div>
+    <div class="prog-note" id="sProgNote">Set your goal above and start logging your weekly saves below!</div>
+  </div>
+
+  <div class="section-head">
+    <div class="section-title">Weekly Log 📓</div>
+    <div class="section-sub">Enter what you actually saved each week.</div>
+  </div>
+  <div class="week-grid" id="weekGrid"></div>
+
+  <div class="card">
+    <div class="card-title">Money Notes 📝</div>
+    <div class="card-sub">Wins, struggles, what to do differently next week.</div>
+    <textarea class="styled" id="notesField" placeholder="This week I cut back on... My biggest win was..." oninput="save()"></textarea>
+  </div>
+
+  <div class="logs-grid">
+    <div class="card" style="margin-bottom:0">
+      <div class="card-title">✂️ Expenses Cut</div>
+      <div class="card-sub">Spending you freed up.</div>
+      <div class="log-add"><input type="text" id="expName" placeholder="What you cut"><input type="number" id="expAmt" placeholder="$" class="amt" inputmode="decimal"><button class="btn-add-sm" onclick="addLog('exp')">+</button></div>
+      <div class="log-list" id="expList"></div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-title">💼 Extra Income</div>
+      <div class="card-sub">Side money toward goal.</div>
+      <div class="log-add"><input type="text" id="incName" placeholder="Source"><input type="number" id="incAmt" placeholder="$" class="amt" inputmode="decimal"><button class="btn-add-sm" onclick="addLog('inc')">+</button></div>
+      <div class="log-list" id="incList"></div>
+    </div>
+  </div>
+  <div style="margin-bottom:14px"></div>
+
+  <div class="upgrade-banner">
+    <div class="upgrade-label">⭐ Upgrade Available</div>
+    <div class="upgrade-title">Ready for the full system?</div>
+    <div class="upgrade-perks">
+      <div class="perk">Variance tracking per week</div>
+      <div class="perk">Discipline commitment plan</div>
+      <div class="perk">Weekly reflection prompts</div>
+      <div class="perk">Budget summary dashboard</div>
+      <div class="perk">CSV export</div>
+      <div class="perk">Projected finish date</div>
+    </div>
+    <button class="btn-upgrade" onclick="document.getElementById('upgrade-modal').classList.add('show')">Get the Full System 🚀</button>
+    <div class="upgrade-note">One-time download · $9 · Use it forever</div>
+  </div>
+
+</div>
+
+<div id="upgrade-modal">
+  <div class="um-box">
+    <div class="um-header"><span class="um-emoji">💸</span><div class="um-title">Her Financial Era Full System</div><div class="um-sub">Everything you need to actually hit your goal — not just track it.</div></div>
+    <div class="um-body">
+      <div class="um-perks">
+        <div class="um-perk">Variance tracking — see exactly where you are off</div>
+        <div class="um-perk">Dashboard with projected finish date</div>
+        <div class="um-perk">Budget summary (cuts + income = net redirected)</div>
+        <div class="um-perk">8 savings discipline commitments to select</div>
+        <div class="um-perk">Weekly reflection prompts</div>
+        <div class="um-perk">CSV export to review or share</div>
+      </div>
+      <div class="um-price">$9 One-Time</div>
+      <div class="um-price-note">Use it forever · No subscription · No login needed</div>
+      <button class="um-cta" id="umCtaBtn" onclick="window.open('https://strategistdmw.gumroad.com/l/oyohmd','_blank')">Get the Full System 🚀</button>
+      <button class="um-close" onclick="window.open('https://strategistdmw.gumroad.com/l/oyohmd','_blank')">Maybe later</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const store={get:function(k){try{const d=localStorage.getItem(k);return d?JSON.parse(d):null;}catch(e){return null;}},set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+let S={goal:5000,weeks:26,startDate:'',weekSavings:{},expenses:[],income:[],notes:'',upgradeUrl:'https://strategistdmw.gumroad.com/l/oyohmd'};
+function load(){const d=store.get('hfe_free_v2');if(d)S={...S,...d};}
+function save(){S.notes=(document.getElementById('notesField')||{}).value||S.notes;store.set('hfe_free_v2',S);updateUI();}
+function wt(){return S.goal/S.weeks;}
+function totalSaved(){return Object.values(S.weekSavings).reduce((a,b)=>a+(parseFloat(b)||0),0);}
+function initGoal(){S.goal=parseFloat(document.getElementById('goalAmt').value)||5000;S.weeks=parseInt(document.getElementById('goalWeeks').value)||26;S.startDate=document.getElementById('startDate').value;S.weekSavings={};save();renderWeeks();}
+function renderWeeks(){
+  const g=document.getElementById('weekGrid');g.innerHTML='';
+  for(let w=1;w<=S.weeks;w++){
+    const v=S.weekSavings[w];const sv=parseFloat(v)||0;const has=v!==undefined&&v!=='';
+    const done=has&&sv>=wt();const partial=has&&sv>0&&sv<wt();
+    const cls='w-cell'+(done?' done':partial?' partial':'');
+    const icon=done?'✅':partial?'🌙':'⬜';
+    const c=document.createElement('div');c.className=cls;
+    c.innerHTML=`<div class="w-num">WK ${w}</div><div class="w-target">$${wt().toFixed(0)}</div><input class="w-inp" type="number" inputmode="decimal" placeholder="$0" value="${has?sv:''}" onchange="logWeek(${w},this.value)"><span class="w-icon">${icon}</span>`;
+    g.appendChild(c);
+  }
+}
+function logWeek(w,v){S.weekSavings[w]=parseFloat(v)||0;save();renderWeeks();}
+function updateUI(){
+  const saved=totalSaved();const pct=Math.min(100,(saved/S.goal)*100);
+  const left=Math.max(0,S.weeks-Object.keys(S.weekSavings).length);const rem=Math.max(0,S.goal-saved);
+  const fmt=n=>n.toLocaleString('en-US',{maximumFractionDigits:0});
+  document.getElementById('sTotalSaved').textContent='$'+fmt(saved);
+  document.getElementById('sGoalOf').textContent='of $'+fmt(S.goal);
+  document.getElementById('sWeeklyTarget').textContent='$'+wt().toFixed(0);
+  document.getElementById('sWeeksLeft').textContent=left;
+  document.getElementById('sRemaining').textContent='$'+fmt(rem)+' to go';
+  document.getElementById('sBar').style.width=pct+'%';
+  document.getElementById('sPct').textContent=pct.toFixed(1)+'%';
+  if(saved>=S.goal){document.getElementById('sProgNote').textContent='YOU DID IT! 🎉 Goal reached! That is your era, sis!';}
+  else if(saved>0){document.getElementById('sProgNote').textContent='$'+fmt(rem)+' to go — $'+(left>0?(rem/left).toFixed(2):'0')+'/week from here.';}
+  else{document.getElementById('sProgNote').textContent='Set your goal above and start logging your weekly saves below!';}
+  if(S.upgradeUrl){const b=document.getElementById('umCtaBtn');b.onclick=function(){window.open(S.upgradeUrl,'_blank');};}
+}
+function addLog(type){
+  const nId=type==='exp'?'expName':'incName';const aId=type==='exp'?'expAmt':'incAmt';
+  const name=document.getElementById(nId).value.trim();const amt=parseFloat(document.getElementById(aId).value);
+  if(!name||!amt)return;
+  const entry={id:Date.now(),name,amt,date:new Date().toLocaleDateString()};
+  if(type==='exp')S.expenses.push(entry);else S.income.push(entry);
+  document.getElementById(nId).value='';document.getElementById(aId).value='';
+  save();renderLogs();
+}
+function removeLog(type,id){if(type==='exp')S.expenses=S.expenses.filter(e=>e.id!==id);else S.income=S.income.filter(e=>e.id!==id);save();renderLogs();}
+function renderLogs(){
+  const eL=document.getElementById('expList');const iL=document.getElementById('incList');if(!eL)return;
+  eL.innerHTML=S.expenses.length===0?'<div class="empty">Nothing cut yet ✂️</div>':S.expenses.map(e=>`<div class="log-item exp"><div><div class="log-name">${e.name}</div><div class="log-date">${e.date}</div></div><div style="display:flex;align-items:center;gap:8px"><div class="log-amt neg">-$${e.amt.toFixed(2)}</div><button class="del-btn" onclick="removeLog('exp',${e.id})">×</button></div></div>`).join('');
+  iL.innerHTML=S.income.length===0?'<div class="empty">No extra income yet 💼</div>':S.income.map(e=>`<div class="log-item inc"><div><div class="log-name">${e.name}</div><div class="log-date">${e.date}</div></div><div style="display:flex;align-items:center;gap:8px"><div class="log-amt pos">+$${e.amt.toFixed(2)}</div><button class="del-btn" onclick="removeLog('inc',${e.id})">×</button></div></div>`).join('');
+}
+load();
+document.getElementById('goalAmt').value=S.goal;document.getElementById('goalWeeks').value=S.weeks;
+document.getElementById('startDate').value=S.startDate;document.getElementById('notesField').value=S.notes;
+renderWeeks();renderLogs();updateUI();
+</script>
+</body>
+</html>
